@@ -7,9 +7,16 @@ spring:
   cloud:
     gateway:
       globalcors:
+        add-to-simple-url-handler-mapping: true
         cors-configurations:
           '[/**]':
-            allowedOrigins: "*"
+            allowedOrigins:
+              # Frontend origin(s) in production
+              - "http://152.42.169.250"
+              - "https://152.42.169.250"
+              - "http://152.42.169.250:5173"
+              - "http://localhost:5173"
+              - "http://localhost:3000"
             allowedMethods:
               - GET
               - POST
@@ -18,6 +25,11 @@ spring:
               - PATCH
               - OPTIONS
             allowedHeaders: "*"
+            exposedHeaders:
+              - Authorization
+              - Content-Type
+            allowCredentials: true
+            maxAge: 3600
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_FIRST
       routes:
