@@ -125,7 +125,7 @@ const CartPage = () => {
       <div className="flex items-center gap-3 mb-8 relative">
         <button 
           onClick={() => navigate(-1)} 
-          className="absolute -left-12 top-1/2 -translate-y-1/2 w-10 h-10 bg-white border border-slate-200 text-slate-500 rounded-full flex items-center justify-center hover:bg-slate-50 hover:text-slate-800 transition-colors shadow-sm hidden md:flex"
+          className="absolute -left-12 top-1/2 -translate-y-1/2 w-10 h-10 bg-white border border-slate-200 text-slate-500 rounded-full hidden md:grid place-items-center hover:bg-slate-50 hover:text-slate-800 transition-colors shadow-sm"
           title="Quay lại"
         >
           <ChevronLeft size={20} />

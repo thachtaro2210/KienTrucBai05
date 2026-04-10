@@ -18,6 +18,13 @@ public interface OrderServiceClient {
     @PatchMapping("/api/v1/orders/{id}/status")
     void updateOrderStatusRaw(@PathVariable("id") String id, @RequestBody Map<String, String> statusBody);
 
+    /**
+     * Backward-compatible alias for older PaymentService code paths.
+     */
+    default OrderDto getOrder(String id) {
+        return getOrderById(id);
+    }
+
     default OrderDto getOrderById(String id) {
         try {
             OrderApiResponse response = getOrderByIdRaw(id);
@@ -26,7 +33,13 @@ public interface OrderServiceClient {
                 OrderDto dto = new OrderDto();
                 dto.setId((String) data.get("id"));
                 dto.setUserId((String) data.get("userId"));
-                dto.setUserName((String) data.get("userName"));
+                Object userNameObj = data.get("userName");
+                if (userNameObj == null) {
+                    userNameObj = data.get("fullName");
+                }
+                if (userNameObj != null) {
+                    dto.setUserName(String.valueOf(userNameObj));
+                }
                 
                 Object totalObj = data.get("totalAmount");
                 if (totalObj instanceof Number) {
