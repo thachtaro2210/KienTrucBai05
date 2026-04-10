@@ -4,7 +4,7 @@
  * by VITE_*_SERVICE_URL build-time environment variables.
  */
 const DEFAULT_GATEWAY_BASE = (() => {
-  return 'http://52.42.169.250:8080';
+  return 'http://152.42.169.250:8080';
 })();
 
 const resolveServiceBase = (envValue) => envValue || DEFAULT_GATEWAY_BASE;
