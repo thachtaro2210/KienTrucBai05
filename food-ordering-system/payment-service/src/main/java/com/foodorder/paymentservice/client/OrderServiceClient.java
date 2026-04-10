@@ -26,6 +26,7 @@ public interface OrderServiceClient {
                 OrderDto dto = new OrderDto();
                 dto.setId((String) data.get("id"));
                 dto.setUserId((String) data.get("userId"));
+                dto.setUserName((String) data.get("userName"));
                 
                 Object totalObj = data.get("totalAmount");
                 if (totalObj instanceof Number) {
@@ -52,6 +53,7 @@ public interface OrderServiceClient {
     class OrderDto {
         private String id;
         private String userId;
+        private String userName;
         private BigDecimal totalAmount;
     }
 

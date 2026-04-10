@@ -19,25 +19,77 @@ const CartPage = () => {
   const [note, setNote]                   = useState('');
   const [loading, setLoading]             = useState(false);
 
+  const getOrderErrorMessage = (err) => {
+    const message =
+      err?.response?.data?.message ||
+      err?.response?.data?.error ||
+      err?.response?.data?.errorCode;
+
+    if (message) return message;
+
+    if (err?.code === 'ECONNABORTED') {
+      return 'Yeu cau tao don bi timeout. Vui long thu lai.';
+    }
+
+    if (!err?.response) {
+      return 'Khong ket noi duoc den server. Vui long kiem tra gateway/service.';
+    }
+
+    return 'Khong the tao don hang';
+  };
+
   const handleCreateOrder = async () => {
     if (items.length === 0) {
       toast.error('Giỏ hàng trống!');
       return;
     }
+
+    if (!user?.id) {
+      toast.error('Phien dang nhap khong hop le. Vui long dang nhap lai.');
+      navigate('/login');
+      return;
+    }
+
+    const sanitizedItems = items
+      .filter((item) => item.foodId && item.quantity > 0)
+      .map(({ foodId, quantity }) => ({ foodId, quantity }));
+
+    if (sanitizedItems.length === 0) {
+      toast.error('Du lieu gio hang khong hop le. Vui long chon lai mon.');
+      return;
+    }
+
     try {
       setLoading(true);
       const payload = {
         userId: user.id,
-        items:  items.map(({ foodId, quantity }) => ({ foodId, quantity })),
+        items:  sanitizedItems,
         note:   note.trim() || null,
       };
-      const res   = await OrderService.create(payload);
+
+      let res;
+      try {
+        res = await OrderService.create(payload);
+      } catch (err) {
+        if (err?.code === 'ECONNABORTED' || !err?.response) {
+          // Retry once for transient timeout/network hiccups.
+          res = await OrderService.create(payload);
+        } else {
+          throw err;
+        }
+      }
+
       const order = res.data?.data;
+
+      if (!order?.id) {
+        throw new Error('Create order response khong hop le');
+      }
+
       clearCart();
       toast.success('Tạo đơn hàng thành công!');
       navigate(`/payment/${order.id}`, { state: { order } });
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Không thể tạo đơn hàng');
+      toast.error(getOrderErrorMessage(err));
     } finally {
       setLoading(false);
     }
@@ -114,25 +166,25 @@ const CartPage = () => {
           value={note}
           onChange={(e) => setNote(e.target.value)}
           placeholder="Ví dụ: Không hành, thêm cay, v.v..."
-          className="flex w-full rounded-xl border border-slate-200 bg-slate-50 hover:bg-white px-4 py-3 text-sm text-slate-800 transition-colors placeholder:text-slate-400 focus-visible:outline-none focus-visible:border-primary-500 focus-visible:ring-4 focus-visible:ring-primary-500/10 resize-none"
+          className="flex w-full rounded-xl border border-slate-200 bg-white hover:border-primary-300 px-4 py-3 text-sm text-slate-800 transition-all placeholder:text-slate-400 focus-visible:outline-none focus-visible:border-primary-500 focus-visible:ring-4 focus-visible:ring-primary-500/10 resize-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]"
         />
       </div>
 
       {/* Summary */}
-      <div className="bg-white/80 backdrop-blur-xl border border-slate-200 rounded-3xl p-6 mb-8 shadow-sm">
-        <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Chi tiết thanh toán</h3>
+      <div className="bg-white border border-slate-200 rounded-[32px] p-8 mb-8 shadow-[0_8px_30px_rgb(0,0,0,0.02)]">
+        <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6 px-1">Chi tiết thanh toán</h3>
         <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <span className="text-slate-500 text-sm">Tạm tính</span>
-            <span className="text-slate-700 font-medium">{formatVND(totalAmount)}</span>
+          <div className="flex items-center justify-between px-1">
+            <span className="text-slate-500 font-medium">Tạm tính</span>
+            <span className="text-slate-900 font-bold">{formatVND(totalAmount)}</span>
           </div>
-          <div className="flex items-center justify-between">
-            <span className="text-slate-500 text-sm">Phí giao hàng</span>
-            <span className="text-green-600 bg-green-50 px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider">Miễn phí</span>
+          <div className="flex items-center justify-between px-1">
+            <span className="text-slate-500 font-medium">Phí giao hàng</span>
+            <span className="text-primary-600 bg-primary-50 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border border-primary-100">Miễn phí</span>
           </div>
-          <div className="border-t border-slate-100 mt-4 pt-5 flex items-center justify-between">
-            <span className="font-bold text-slate-800 text-lg">Tổng cộng</span>
-            <span className="text-3xl font-extrabold text-primary-600">{formatVND(totalAmount)}</span>
+          <div className="border-t border-slate-100 mt-6 pt-6 flex items-center justify-between px-1">
+            <span className="font-black text-slate-900 text-xl tracking-tight">Tổng cộng</span>
+            <span className="text-4xl font-black text-primary-500 tracking-tighter">{formatVND(totalAmount)}</span>
           </div>
         </div>
       </div>

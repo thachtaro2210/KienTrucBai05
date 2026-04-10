@@ -1,5 +1,6 @@
-import { Plus } from 'lucide-react';
+import { Plus, Eye } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { Link } from 'react-router-dom';
 import Badge from './ui/Badge';
 import { motion } from 'framer-motion';
 
@@ -16,7 +17,7 @@ const FoodCard = ({ food }) => {
       className="bg-white/60 backdrop-blur-3xl rounded-[24px] overflow-hidden group shadow-[0_4px_24px_-4px_rgba(0,0,0,0.02)] hover:shadow-[0_20px_40px_-8px_rgba(0,0,0,0.06)] border border-white/80 hover:border-slate-200/60 flex flex-col h-full relative"
     >
       {/* Absolute image area for stretch */}
-      <div className="relative h-[220px] overflow-hidden bg-slate-100/50 w-full rounded-t-[24px]">
+      <Link to={`/foods/${food.id}`} className="relative h-[220px] overflow-hidden bg-slate-100/50 w-full rounded-t-[24px] block">
         <img
           src={food.imageUrl || `https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400`}
           alt={food.name}
@@ -54,14 +55,16 @@ const FoodCard = ({ food }) => {
             </Badge>
           </div>
         )}
-      </div>
+      </Link>
 
       {/* Content */}
       <div className="p-5 flex flex-col flex-1 bg-white/40">
         <div className="flex justify-between items-start gap-2 mb-2">
-          <h3 className="font-semibold text-slate-800 text-[17px] leading-snug tracking-tight line-clamp-2">
-            {food.name}
-          </h3>
+          <Link to={`/foods/${food.id}`} className="hover:text-primary-600 transition-colors">
+            <h3 className="font-semibold text-slate-800 text-[17px] leading-snug tracking-tight line-clamp-2">
+              {food.name}
+            </h3>
+          </Link>
         </div>
         
         {food.description && (

@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * REST controller for Order Service.
@@ -56,7 +57,9 @@ public class OrderController {
     @PatchMapping("/{id}/status")
     public ResponseEntity<ApiResponse<OrderResponse>> updateStatus(
             @PathVariable String id,
-            @RequestParam OrderStatus status) {
+            @RequestBody Map<String, String> body) {
+        String statusStr = body.get("status");
+        OrderStatus status = OrderStatus.valueOf(statusStr.toUpperCase());
         OrderResponse data = orderService.updateOrderStatus(id, status);
         return ResponseEntity.ok(ApiResponse.ok("Order status updated", data));
     }

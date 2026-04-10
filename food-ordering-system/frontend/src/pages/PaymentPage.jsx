@@ -26,6 +26,7 @@ const PaymentPage = () => {
   const [method, setMethod]    = useState('COD');
   const [loading, setLoading]  = useState(false);
   const [result, setResult]    = useState(null);
+  const isAlreadyPaid           = order?.status === 'PAID';
 
   useEffect(() => {
     if (!order) {
@@ -36,6 +37,11 @@ const PaymentPage = () => {
   }, [orderId, order]);
 
   const handlePay = async () => {
+    if (isAlreadyPaid) {
+      toast('Đơn này đã được thanh toán rồi.');
+      return;
+    }
+
     try {
       setLoading(true);
       const res = await PaymentService.process({
@@ -44,9 +50,18 @@ const PaymentPage = () => {
         method,
       });
       const payment = res.data?.data;
+      if (payment?.method) {
+        setMethod(payment.method);
+      }
       setResult(payment);
       toast.success('Thanh toán thành công!');
     } catch (err) {
+      const errorCode = err.response?.data?.errorCode;
+      if (errorCode === 'ORDER_ALREADY_PAID') {
+        toast('Đơn này đã thanh toán trước đó.');
+        navigate('/orders');
+        return;
+      }
       toast.error(err.response?.data?.message || 'Thanh toán thất bại');
     } finally {
       setLoading(false);
@@ -62,7 +77,7 @@ const PaymentPage = () => {
         transition={{ type: "spring", bounce: 0.4 }}
         className="max-w-md mx-auto px-4 py-16 text-center mt-10"
       >
-        <div className="bg-white rounded-[2rem] shadow-sm border border-slate-100 p-8">
+        <div className="bg-white rounded-[40px] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.08)] border border-slate-100 p-10">
           <motion.div 
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
@@ -71,15 +86,15 @@ const PaymentPage = () => {
           >
             <CheckCircle2 size={48} className="text-green-500 animate-pulse" />
           </motion.div>
-          <h2 className="text-2xl font-bold text-slate-800 mb-4">Thanh toán thành công!</h2>
-          <div className="bg-slate-50/80 rounded-2xl p-5 mb-8 text-left border border-slate-100/80">
+          <h2 className="text-3xl font-black text-slate-900 mb-6 tracking-tight">Thanh toán thành công!</h2>
+          <div className="bg-slate-50/50 rounded-[32px] p-8 mb-8 text-left border border-slate-100">
             <div className="flex justify-between items-center mb-3">
               <span className="text-slate-500 text-sm font-medium">Mã giao dịch</span>
               <span className="text-slate-800 font-mono font-bold bg-white px-2 py-1 rounded shadow-sm border border-slate-100">{result.transactionRef}</span>
             </div>
             <div className="flex justify-between items-center mb-3">
               <span className="text-slate-500 text-sm font-medium">Phương thức</span>
-              <span className="text-slate-800 font-bold">{method === 'COD' ? 'Tiền mặt' : 'Chuyển khoản'}</span>
+              <span className="text-slate-800 font-bold">{result.method === 'COD' ? 'Tiền mặt' : 'Chuyển khoản'}</span>
             </div>
             <div className="border-t border-slate-200/60 mt-4 pt-4 flex justify-between items-center">
               <span className="text-slate-600 font-bold">Đã thanh toán</span>
@@ -113,7 +128,7 @@ const PaymentPage = () => {
       <div className="text-center mb-10 relative">
         <button 
           onClick={() => navigate(-1)} 
-          className="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-white border border-slate-200 text-slate-500 rounded-full flex items-center justify-center hover:bg-slate-50 hover:text-slate-800 transition-colors shadow-sm hidden sm:flex"
+          className="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-white border border-slate-200 text-slate-500 rounded-full hidden sm:grid place-items-center hover:bg-slate-50 hover:text-slate-800 transition-colors shadow-sm"
           title="Quay lại"
         >
           <ChevronLeft size={20} />
@@ -128,21 +143,21 @@ const PaymentPage = () => {
 
       {/* Order Summary */}
       {order && (
-        <div className="bg-white/80 backdrop-blur-xl border border-slate-200 rounded-[2rem] p-8 mb-8 shadow-sm">
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Tóm tắt đơn hàng</p>
-          <div className="space-y-4 bg-slate-50 p-5 rounded-2xl border border-slate-100 mb-6">
+        <div className="bg-white border border-slate-100 rounded-[40px] p-10 mb-8 shadow-sm">
+          <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-6">Tóm tắt đơn hàng</p>
+          <div className="space-y-4 bg-slate-50/50 p-6 rounded-[32px] border border-slate-100 mb-8">
             {order.items?.map((item, i) => (
               <div key={i} className="flex justify-between items-center text-sm">
-                <span className="text-slate-700 font-medium">
-                  {item.foodName} <span className="text-slate-400 ml-1.5 font-bold bg-white px-1.5 py-0.5 rounded shadow-sm border border-slate-100">×{item.quantity}</span>
+                <span className="text-slate-700 font-bold">
+                  {item.foodName} <span className="text-slate-400 ml-2 font-black bg-white px-1.5 py-0.5 rounded border border-slate-100 text-[10px] tracking-tighter uppercase">×{item.quantity}</span>
                 </span>
-                <span className="text-slate-800 font-bold">{formatVND(item.subtotal)}</span>
+                <span className="text-slate-900 font-black">{formatVND(item.subtotal)}</span>
               </div>
             ))}
           </div>
           <div className="flex justify-between items-center px-2">
-            <span className="text-slate-600 font-bold text-lg">Tổng thanh toán</span>
-            <span className="text-3xl font-black text-primary-600">{formatVND(order.totalAmount)}</span>
+            <span className="text-slate-900 font-black text-xl tracking-tight">Tổng thanh toán</span>
+            <span className="text-4xl font-black text-primary-500 tracking-tighter">{formatVND(order.totalAmount)}</span>
           </div>
         </div>
       )}
@@ -155,29 +170,29 @@ const PaymentPage = () => {
               whileTap={{ scale: 0.98 }}
               key={value}
               onClick={() => setMethod(value)}
-              className={`w-full flex items-center gap-5 p-6 rounded-3xl border-2 transition-all duration-200 text-left bg-white ${
+              className={`w-full flex items-center gap-6 p-6 lg:p-8 rounded-[32px] border-2 transition-all duration-300 text-left bg-white ${
                 method === value
-                  ? 'border-primary-500 shadow-md shadow-primary-500/10 bg-primary-50/30'
-                  : 'border-slate-200 hover:border-primary-300 hover:shadow-sm'
+                  ? 'border-primary-500 shadow-xl shadow-primary-500/10'
+                  : 'border-slate-100 hover:border-primary-200 hover:shadow-sm'
               }`}
             >
               <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-colors ${
-                method === value ? 'bg-primary-100 shadow-inner' : 'bg-slate-100'
+                method === value ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/20' : 'bg-slate-50 text-slate-400'
               }`}>
-                <Icon size={28} className={method === value ? 'text-primary-600' : 'text-slate-500'} />
+                <Icon size={24} />
               </div>
               <div className="flex-1">
-                <p className={`font-bold text-lg tracking-tight ${method === value ? 'text-primary-800' : 'text-slate-800'}`}>
+                <p className={`font-black text-xl tracking-tight ${method === value ? 'text-slate-900' : 'text-slate-800'}`}>
                   {label}
                 </p>
-                <p className={`text-sm mt-1 font-medium ${method === value ? 'text-primary-600/80' : 'text-slate-500'}`}>
+                <p className={`text-sm mt-1 font-bold ${method === value ? 'text-primary-600/60' : 'text-slate-400'}`}>
                   {desc}
                 </p>
               </div>
-              <div className={`w-7 h-7 rounded-full border-[3px] flex items-center justify-center transition-all ${
-                method === value ? 'border-primary-500 bg-primary-500' : 'border-slate-300'
+              <div className={`w-8 h-8 rounded-full border-[3px] flex items-center justify-center transition-all ${
+                method === value ? 'border-primary-500 bg-primary-500' : 'border-slate-200'
               }`}>
-                {method === value && <div className="w-2.5 h-2.5 rounded-full bg-white" />}
+                {method === value && <div className="w-3 h-3 rounded-full bg-white shadow-sm" />}
               </div>
             </motion.button>
           ))}
@@ -187,12 +202,20 @@ const PaymentPage = () => {
       <Button
         size="lg"
         onClick={handlePay}
-        disabled={loading || !order}
+        disabled={loading || !order || isAlreadyPaid}
         isLoading={loading}
         className="w-full text-lg shadow-xl shadow-primary-500/20 py-7"
       >
-        {`Xác nhận thanh toán ${order ? formatVND(order.totalAmount) : ''}`}
+        {isAlreadyPaid
+          ? 'Đơn đã thanh toán'
+          : `Xác nhận thanh toán ${order ? formatVND(order.totalAmount) : ''}`}
       </Button>
+
+      {isAlreadyPaid && (
+        <p className="mt-3 text-center text-sm text-emerald-600 font-semibold">
+          Đơn hàng này đã được thanh toán. Bạn có thể xem lại trong mục Đơn hàng.
+        </p>
+      )}
 
       <div className="mt-8 text-center">
         <p className="text-xs font-semibold text-slate-400 flex items-center justify-center gap-1.5 uppercase tracking-widest">

@@ -87,68 +87,68 @@ const AdminDashboard = () => {
         className="grid grid-cols-1 md:grid-cols-3 gap-6"
       >
         {/* Card: Doanh Thu */}
-        <motion.div variants={itemVariants} className="col-span-1 md:col-span-2 bg-white rounded-2xl p-6 border border-slate-100 shadow-sm relative overflow-hidden group">
+        <motion.div variants={itemVariants} className="col-span-1 md:col-span-2 bg-white rounded-[32px] p-8 border border-slate-100 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.03)] relative overflow-hidden group">
           <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
-            <TrendingUp size={120} className="text-primary-600" />
+            <TrendingUp size={160} className="text-primary-600" />
           </div>
-          <div className="flex items-center gap-3 mb-4">
-            <span className="w-10 h-10 rounded-xl bg-primary-50 flex items-center justify-center">
-              <DollarSign size={20} className="text-primary-600" />
+          <div className="flex items-center gap-3 mb-6">
+            <span className="w-12 h-12 rounded-2xl bg-primary-50 flex items-center justify-center">
+              <DollarSign size={24} className="text-primary-600" />
             </span>
-            <h2 className="font-semibold text-slate-600">Tổng Doanh Thu (Đã thu)</h2>
+            <h2 className="font-bold text-slate-500 uppercase tracking-widest text-xs">Tổng Doanh Thu (Đã thu)</h2>
           </div>
           {loading ? (
-            <Skeleton className="h-10 w-48 mt-2" />
+            <Skeleton className="h-14 w-64 mt-2" />
           ) : (
-            <div className="flex items-end gap-3">
-              <span className="text-4xl font-extrabold text-slate-800 tracking-tight">
+            <div className="flex items-end gap-4">
+              <span className="text-5xl font-black text-slate-900 tracking-tighter">
                 {formatCurrency(stats.revenue)}
               </span>
-              <span className="text-sm font-medium text-emerald-500 bg-emerald-50 px-2 py-1 rounded-md mb-1 flex items-center gap-1">
-                <Activity size={14} /> +12%
+              <span className="text-xs font-black text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-full mb-2 flex items-center gap-1 border border-emerald-100 uppercase tracking-wider">
+                <Activity size={12} /> +12.5%
               </span>
             </div>
           )}
         </motion.div>
 
         {/* Card: Đơn Hàng */}
-        <motion.div variants={itemVariants} className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col justify-between">
-          <div className="flex items-center gap-3 mb-2">
-            <span className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center">
-              <Package size={20} className="text-indigo-600" />
+        <motion.div variants={itemVariants} className="bg-white rounded-[32px] p-8 border border-slate-100 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.03)] flex flex-col justify-between">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="w-12 h-12 rounded-2xl bg-primary-50 flex items-center justify-center">
+              <Package size={24} className="text-primary-600" />
             </span>
-            <h2 className="font-semibold text-slate-600">Tổng Đơn Hàng</h2>
+            <h2 className="font-bold text-slate-500 uppercase tracking-widest text-xs">Tổng Đơn Hàng</h2>
           </div>
           {loading ? (
-            <Skeleton className="h-10 w-24 mt-2" />
+            <Skeleton className="h-12 w-24" />
           ) : (
-            <span className="text-4xl font-extrabold text-slate-800 tracking-tight">{stats.orders}</span>
+            <span className="text-5xl font-black text-slate-900 tracking-tighter">{stats.orders}</span>
           )}
         </motion.div>
 
         {/* Card: Món Ăn */}
-        <motion.div variants={itemVariants} className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex flex-col justify-between">
-          <div className="flex items-center gap-3 mb-2">
-            <span className="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center">
-              <UtensilsCrossed size={20} className="text-orange-600" />
+        <motion.div variants={itemVariants} className="bg-white rounded-[32px] p-8 border border-slate-100 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.03)] flex flex-col justify-between">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="w-12 h-12 rounded-2xl bg-primary-50 flex items-center justify-center">
+              <UtensilsCrossed size={24} className="text-primary-600" />
             </span>
-            <h2 className="font-semibold text-slate-600">Danh mục Món ăn</h2>
+            <h2 className="font-bold text-slate-500 uppercase tracking-widest text-xs">Danh mục Món ăn</h2>
           </div>
           {loading ? (
-            <Skeleton className="h-10 w-24 mt-2" />
+            <Skeleton className="h-12 w-24" />
           ) : (
-            <span className="text-4xl font-extrabold text-slate-800 tracking-tight">{stats.foods}</span>
+            <span className="text-5xl font-black text-slate-900 tracking-tighter">{stats.foods}</span>
           )}
         </motion.div>
 
         {/* Card: Phân Quyền */}
-        <motion.div variants={itemVariants} className="md:col-span-2 bg-white rounded-2xl p-6 border border-slate-100 shadow-sm flex items-center gap-6">
-          <div className="w-16 h-16 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center flex-shrink-0">
-            <Users size={28} className="text-slate-400" />
+        <motion.div variants={itemVariants} className="md:col-span-2 bg-white rounded-[32px] p-8 border border-slate-100 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.03)] flex items-center gap-8">
+          <div className="w-20 h-20 rounded-[20px] bg-slate-50 border border-slate-100 flex items-center justify-center flex-shrink-0">
+            <Users size={32} className="text-slate-400" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-slate-800 mb-1">Quản lý Tài Khoản</h3>
-            <p className="text-slate-500 text-sm">Hệ thống phân quyền Role-Based. Bạn đang thao tác dưới tư cách <span className="font-semibold text-primary-600">Administrator</span>.</p>
+            <h3 className="text-xl font-black text-slate-900 mb-1 tracking-tight">Quản lý Tài Khoản</h3>
+            <p className="text-slate-500 text-sm font-medium">Hệ thống phân quyền Role-Based. Bạn đang thao tác dưới tư cách <span className="font-bold text-primary-500">Administrator</span>.</p>
           </div>
         </motion.div>
       </motion.div>

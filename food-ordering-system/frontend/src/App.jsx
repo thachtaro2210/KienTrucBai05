@@ -7,6 +7,7 @@ import Navbar from './components/Navbar';
 import LoginPage    from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import FoodsPage    from './pages/FoodsPage';
+import FoodDetailPage from './pages/FoodDetailPage';
 import CartPage     from './pages/CartPage';
 import OrdersPage   from './pages/OrdersPage';
 import PaymentPage  from './pages/PaymentPage';
@@ -36,6 +37,7 @@ const App = () => (
           {/* Protected routes */}
           <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
             <Route path="/foods"            element={<FoodsPage />} />
+            <Route path="/foods/:id"        element={<FoodDetailPage />} />
             <Route path="/cart"             element={<CartPage />} />
             <Route path="/orders"           element={<OrdersPage />} />
             <Route path="/payment/:orderId" element={<PaymentPage />} />

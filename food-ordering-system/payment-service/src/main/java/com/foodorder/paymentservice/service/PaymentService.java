@@ -30,15 +30,20 @@ public class PaymentService {
         log.info("[PaymentService] Processing payment for orderId={}, method={}",
                 request.getOrderId(), request.getMethod());
 
-        // 1. Check if already paid
-        paymentRepository.findByOrderId(request.getOrderId()).ifPresent(existing -> {
-            if (existing.getStatus() == PaymentStatus.SUCCESS) {
-                throw new AppException(ErrorCode.ORDER_ALREADY_PAID);
-            }
-        });
+        // 1. Return existing success payment if this order is already paid
+        Payment existingPaidPayment = paymentRepository.findByOrderId(request.getOrderId())
+            .filter(existing -> existing.getStatus() == PaymentStatus.SUCCESS)
+            .orElse(null);
+
+        if (existingPaidPayment != null) {
+            log.info("[PaymentService] Order already paid, returning existing payment ref={}",
+                existingPaidPayment.getTransactionRef());
+            return toPaymentResponse(existingPaidPayment,
+                "Đơn hàng này đã được thanh toán trước đó.");
+        }
 
         // 2. Fetch order details from Order Service
-        OrderDto order = orderServiceClient.getOrder(request.getOrderId());
+        OrderDto order = orderServiceClient.getOrderById(request.getOrderId());
         if (order == null) {
             throw new AppException(ErrorCode.ORDER_NOT_FOUND);
         }
@@ -63,23 +68,14 @@ public class PaymentService {
         orderServiceClient.updateOrderStatus(request.getOrderId(), "PAID");
 
         // 6. Send notification (console log)
-        String notifMsg = notificationServiceClient.sendPaymentSuccessNotification(
-                order.getUserName(),
+        String notifMsg = String.format("Đã thanh toán thành công đơn hàng %s với số tiền %s VNĐ.", order.getId(), order.getTotalAmount().toPlainString());
+        notificationServiceClient.sendNotification(
+                order.getUserId(),
                 order.getId(),
-                order.getTotalAmount().toPlainString()
+                notifMsg
         );
 
-        return PaymentResponse.builder()
-                .id(saved.getId())
-                .orderId(saved.getOrderId())
-                .userId(saved.getUserId())
-                .amount(saved.getAmount())
-                .method(saved.getMethod())
-                .status(saved.getStatus())
-                .transactionRef(saved.getTransactionRef())
-                .notificationMessage(notifMsg)
-                .createdAt(saved.getCreatedAt())
-                .build();
+        return toPaymentResponse(saved, notifMsg);
     }
 
     /* ── Get All Payments ────────────────────────────────────────── */
@@ -97,5 +93,19 @@ public class PaymentService {
                         .createdAt(p.getCreatedAt())
                         .build())
                 .toList();
+    }
+
+    private PaymentResponse toPaymentResponse(Payment payment, String notificationMessage) {
+        return PaymentResponse.builder()
+                .id(payment.getId())
+                .orderId(payment.getOrderId())
+                .userId(payment.getUserId())
+                .amount(payment.getAmount())
+                .method(payment.getMethod())
+                .status(payment.getStatus())
+                .transactionRef(payment.getTransactionRef())
+                .notificationMessage(notificationMessage)
+                .createdAt(payment.getCreatedAt())
+                .build();
     }
 }

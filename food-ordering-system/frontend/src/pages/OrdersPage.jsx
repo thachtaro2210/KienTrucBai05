@@ -135,10 +135,10 @@ const OrdersPage = () => {
                 >
                   <div>
                     <div className="flex items-center gap-3 mb-2">
-                      <span className="text-sm font-mono text-primary-700 font-bold bg-primary-50 border border-primary-100 px-2 py-0.5 rounded-md">
+                      <span className="text-sm font-mono text-primary-700 font-bold bg-primary-50 px-2 py-0.5 rounded-md">
                         #{order.id.slice(-8).toUpperCase()}
                       </span>
-                      <span className="text-xs text-slate-400 font-medium">
+                      <span className="text-xs text-slate-400 font-bold uppercase tracking-wider">
                         {new Date(order.createdAt).toLocaleString('vi-VN', { dateStyle: 'medium', timeStyle: 'short' })}
                       </span>
                     </div>
@@ -154,7 +154,7 @@ const OrdersPage = () => {
                     </div>
                     <motion.div 
                       animate={{ rotate: isOpen ? 180 : 0 }}
-                      className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${isOpen ? 'bg-primary-100 text-primary-600' : 'bg-slate-100 text-slate-400'}`}
+                      className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${isOpen ? 'bg-primary-50 text-primary-600' : 'bg-slate-50 text-slate-400'}`}
                     >
                       <ChevronDown size={20} />
                     </motion.div>
@@ -168,17 +168,17 @@ const OrdersPage = () => {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      className="border-t border-slate-100 bg-slate-50/50"
+                      className="border-t border-slate-50 bg-white"
                     >
                       <div className="p-6">
                         <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Thông tin chi tiết</p>
-                        <div className="space-y-3 mb-4 bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+                        <div className="space-y-4 mb-4 bg-slate-50/50 p-6 rounded-[24px] border border-slate-100">
                           {order.items?.map((item, i) => (
                             <div key={i} className="flex justify-between items-center text-sm">
-                              <span className="text-slate-700 font-medium">
-                                {item.foodName} <span className="text-slate-400 text-xs font-bold ml-1.5 bg-slate-100 px-1.5 py-0.5 rounded">× {item.quantity}</span>
+                              <span className="text-slate-700 font-bold">
+                                {item.foodName} <span className="text-slate-400 text-[10px] font-black ml-2 uppercase tracking-tighter bg-white px-1.5 py-0.5 rounded border border-slate-100">× {item.quantity}</span>
                               </span>
-                              <span className="text-slate-800 font-bold">{formatVND(item.subtotal)}</span>
+                              <span className="text-slate-900 font-black">{formatVND(item.subtotal)}</span>
                             </div>
                           ))}
                         </div>

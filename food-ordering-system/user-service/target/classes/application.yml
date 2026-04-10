@@ -1,0 +1,56 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: user-service
+  data:
+    mongodb:
+      # =============================================
+      # LOCAL MongoDB (default)
+      # =============================================
+      # LOCAL MongoDB (default)
+      # =============================================
+      uri: ${MONGO_URI:mongodb://localhost:27017/food_ordering_users}
+    redis:
+      url: ${REDIS_URL:redis://default:IKSoyU1Y3r4y9i3uOxF2Q7sEsETVnqS4@redis-10153.crce194.ap-seast-1-1.ec2.cloud.redislabs.com:10153}
+
+      # =============================================
+      # MongoDB Atlas (comment local, uncomment this)
+      # uri: mongodb+srv://<USERNAME>:<PASSWORD>@<CLUSTER>.mongodb.net/food_ordering_users?retryWrites=true&w=majority
+      # =============================================
+
+# =============================================
+# JWT Configuration
+# =============================================
+app:
+  jwt:
+    secret: ${JWT_SECRET:food-ordering-super-secret-key-minimum-256bits-2024}
+    expiration: ${JWT_EXPIRATION_MS:86400000}  # 24 hours
+
+  # =============================================
+  # Data Initializer Toggle
+  # true  => seed sample data on startup
+  # false => skip seeding (use in production)
+  # =============================================
+  data:
+    init:
+      enabled: ${DATA_INIT_ENABLED:true}
+
+  # CORS allowed origins (add LAN IPs for each team member)
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:3000}
+
+# =============================================
+# Logging
+# =============================================
+logging:
+  level:
+    root: INFO
+    com.foodorder.userservice: DEBUG
+    org.springframework.data.mongodb: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [%logger{36}] - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [%logger{36}] - %msg%n"
+  file:
+    name: logs/user-service.log

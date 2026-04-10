@@ -41,7 +41,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 relative overflow-hidden py-8">
+    <div className="min-h-screen flex items-center justify-center bg-white relative overflow-hidden py-8">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div 
           animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }} 
@@ -68,8 +68,8 @@ const RegisterPage = () => {
           <h1 className="text-3xl font-bold gradient-text">FoodOrder</h1>
         </div>
 
-        <div className="bg-white/80 backdrop-blur-xl border border-white p-8 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-          <h2 className="text-xl font-semibold text-slate-800 mb-6 text-center">Đăng ký tài khoản</h2>
+        <div className="bg-white border border-slate-100 p-8 lg:p-10 rounded-[32px] shadow-[0_8px_40px_-12px_rgba(0,0,0,0.04)]">
+          <h2 className="text-2xl font-black text-slate-800 mb-8 text-center tracking-tight">Tạo tài khoản mới</h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
