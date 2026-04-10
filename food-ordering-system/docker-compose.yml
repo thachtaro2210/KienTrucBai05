@@ -32,7 +32,7 @@ services:
     container_name: food_order_service
     environment:
       - MONGO_URI=mongodb://mongodb:27017/food_ordering_orders
-      - USER_SERVICE_URL=http://152.42.169.250:8081
+      - USER_SERVICE_URL=http://user-service:8081
       - FOOD_SERVICE_URL=http://172.28.62.165:8082
     depends_on:
       - mongodb
@@ -55,9 +55,9 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - USER_SERVICE_URL=http://152.42.169.250:8081
+      - USER_SERVICE_URL=http://user-service:8081
       - FOOD_SERVICE_URL=http://172.28.62.165:8082
-      - ORDER_SERVICE_URL=http://152.42.169.250:8083
+      - ORDER_SERVICE_URL=http://order-service:8083
       - PAYMENT_SERVICE_URL=http://172.28.62.165:8084
     depends_on:
       - user-service
