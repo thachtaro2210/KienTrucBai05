@@ -16,16 +16,16 @@ spring:
 # ── Inter-service endpoints (update IP for LAN deployment) ──────────
 services:
   user-service:
-    url: ${USER_SERVICE_URL:http://localhost:8081}
+    url: ${USER_SERVICE_URL:http://152.42.169.250:8081}
   food-service:
-    url: ${FOOD_SERVICE_URL:http://localhost:8082}
+    url: ${FOOD_SERVICE_URL:http://152.42.169.250:8082}
 
 app:
   data:
     init:
       enabled: ${DATA_INIT_ENABLED:false}   # Orders usually not pre-seeded
   cors:
-    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:3000}
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:3000,http://152.42.169.250:5173}
 
 logging:
   level:

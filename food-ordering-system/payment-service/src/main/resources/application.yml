@@ -6,7 +6,7 @@ spring:
     name: payment-service
   data:
     mongodb:
-      uri: ${MONGO_URI:mongodb://localhost:27017/food_ordering_payments}
+      uri: ${MONGO_URI:mongodb://localhost:27017/food_ordering_payments,http://152.42.169.250:5173}
       # Atlas: mongodb+srv://<USER>:<PASS>@cluster.mongodb.net/food_ordering_payments
   cloud:
     openfeign:

@@ -14,7 +14,7 @@ app:
     init:
       enabled: ${DATA_INIT_ENABLED:true}
   cors:
-    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:3000}
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:3000,http://152.42.169.250:5173}
 
 logging:
   level:
