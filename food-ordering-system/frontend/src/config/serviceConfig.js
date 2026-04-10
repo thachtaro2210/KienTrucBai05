@@ -16,10 +16,10 @@
  * └──────────────────────────────────────────────────────────────────────┘
  */
 const SERVICE_CONFIG = {
-  USER_SERVICE:    import.meta.env.VITE_USER_SERVICE_URL    || 'http://localhost:8081',
-  FOOD_SERVICE:    import.meta.env.VITE_FOOD_SERVICE_URL    || 'http://localhost:8082',
-  ORDER_SERVICE:   import.meta.env.VITE_ORDER_SERVICE_URL   || 'http://localhost:8083',
-  PAYMENT_SERVICE: import.meta.env.VITE_PAYMENT_SERVICE_URL || 'http://localhost:8084',
+  USER_SERVICE:    import.meta.env.VITE_USER_SERVICE_URL    || 'http://localhost:8080',
+  FOOD_SERVICE:    import.meta.env.VITE_FOOD_SERVICE_URL    || 'http://localhost:8080',
+  ORDER_SERVICE:   import.meta.env.VITE_ORDER_SERVICE_URL   || 'http://localhost:8080',
+  PAYMENT_SERVICE: import.meta.env.VITE_PAYMENT_SERVICE_URL || 'http://localhost:8080',
 };
 
 export default SERVICE_CONFIG;

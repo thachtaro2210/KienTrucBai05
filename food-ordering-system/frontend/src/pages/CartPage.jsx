@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, ChevronLeft } from 'lucide-react';
 import CartItem from '../components/CartItem';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
@@ -70,11 +70,18 @@ const CartPage = () => {
       animate={{ opacity: 1, y: 0 }}
       className="max-w-3xl mx-auto px-4 sm:px-6 py-8"
     >
-      <div className="flex items-center gap-3 mb-8">
+      <div className="flex items-center gap-3 mb-8 relative">
+        <button 
+          onClick={() => navigate(-1)} 
+          className="absolute -left-12 top-1/2 -translate-y-1/2 w-10 h-10 bg-white border border-slate-200 text-slate-500 rounded-full flex items-center justify-center hover:bg-slate-50 hover:text-slate-800 transition-colors shadow-sm hidden md:flex"
+          title="Quay lại"
+        >
+          <ChevronLeft size={20} />
+        </button>
         <div className="w-12 h-12 bg-primary-100/50 rounded-2xl flex items-center justify-center">
           <ShoppingCart size={24} className="text-primary-600" />
         </div>
-        <h1 className="text-2xl font-bold text-slate-800">Giỏ hàng của bạn</h1>
+        <h1 className="text-2xl font-bold text-slate-800 tracking-tight">Giỏ hàng của bạn</h1>
         <span className="bg-primary-100 text-primary-800 px-3 py-1 rounded-full text-xs font-bold ml-auto">{items.length} món</span>
       </div>
 

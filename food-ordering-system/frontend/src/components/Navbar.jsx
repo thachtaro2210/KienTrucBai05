@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { ShoppingCart, UtensilsCrossed, ClipboardList, LogOut, User, Shield } from 'lucide-react';
+import { ShoppingCart, UtensilsCrossed, ClipboardList, LogOut, User, Shield, LayoutDashboard } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 
@@ -18,6 +18,10 @@ const Navbar = () => {
     { to: '/foods',  label: 'Menu',     icon: UtensilsCrossed },
     { to: '/orders', label: 'Đơn hàng', icon: ClipboardList },
   ];
+
+  if (isAdmin) {
+    navLinks.push({ to: '/admin', label: 'Dashboard', icon: LayoutDashboard });
+  }
 
   const isActive = (path) => location.pathname.startsWith(path);
 

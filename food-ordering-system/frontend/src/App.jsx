@@ -10,12 +10,15 @@ import FoodsPage    from './pages/FoodsPage';
 import CartPage     from './pages/CartPage';
 import OrdersPage   from './pages/OrdersPage';
 import PaymentPage  from './pages/PaymentPage';
+import AdminDashboard from './pages/AdminDashboard';
 
 /* Layout with Navbar */
 const AppLayout = () => (
   <>
+    <div className="bg-glow-1" />
+    <div className="bg-glow-2" />
     <Navbar />
-    <main className="min-h-[calc(100vh-4rem)] bg-slate-50">
+    <main className="min-h-[calc(100vh-4rem)] relative z-10">
       <Outlet />
     </main>
   </>
@@ -36,6 +39,7 @@ const App = () => (
             <Route path="/cart"             element={<CartPage />} />
             <Route path="/orders"           element={<OrdersPage />} />
             <Route path="/payment/:orderId" element={<PaymentPage />} />
+            <Route path="/admin"            element={<AdminDashboard />} />
           </Route>
 
           {/* Fallback */}
@@ -44,10 +48,25 @@ const App = () => (
 
         {/* Toast notifications */}
         <Toaster
-          position="top-right"
+          position="bottom-center"
           toastOptions={{
             duration: 3000,
-            className: 'hot-toast-custom',
+            style: {
+              background: '#ffffff',
+              color: '#334155',
+              boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05)',
+              borderRadius: '9999px',
+              padding: '12px 24px',
+              border: '1px solid #f1f5f9',
+              fontSize: '14px',
+              fontWeight: '500'
+            },
+            success: {
+              iconTheme: {
+                primary: '#0ea5e9',
+                secondary: '#fff',
+              },
+            },
           }}
         />
       </CartProvider>

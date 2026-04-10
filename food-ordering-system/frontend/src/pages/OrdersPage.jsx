@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ClipboardList, RefreshCw, ChevronDown } from 'lucide-react';
+import { ClipboardList, RefreshCw, ChevronDown, ChevronLeft } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import OrderService from '../services/orderService';
 import { useAuth } from '../context/AuthContext';
 import Badge from '../components/ui/Badge';
@@ -21,6 +22,7 @@ const STATUS_MAP = {
 
 const OrdersPage = () => {
   const { user, isAdmin }         = useAuth();
+  const navigate                  = useNavigate();
   const [orders, setOrders]       = useState([]);
   const [loading, setLoading]     = useState(true);
   const [expanded, setExpanded]   = useState(null);
@@ -58,7 +60,14 @@ const OrdersPage = () => {
         animate={{ opacity: 1, y: 0 }}
         className="flex items-center justify-between mb-8"
       >
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 relative">
+          <button 
+            onClick={() => navigate(-1)} 
+            className="absolute -left-12 top-1/2 -translate-y-1/2 w-10 h-10 bg-white border border-slate-200 text-slate-500 rounded-full flex items-center justify-center hover:bg-slate-50 hover:text-slate-800 transition-colors shadow-sm hidden md:flex"
+            title="Quay lại"
+          >
+            <ChevronLeft size={20} />
+          </button>
           <div className="w-14 h-14 bg-primary-100 rounded-2xl flex items-center justify-center text-primary-600 shadow-inner">
             <ClipboardList size={28} />
           </div>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { CreditCard, Banknote, CheckCircle2, ShieldCheck } from 'lucide-react';
+import { CreditCard, Banknote, CheckCircle2, ShieldCheck, ChevronLeft } from 'lucide-react';
 import PaymentService from '../services/paymentService';
 import OrderService from '../services/orderService';
 import { useAuth } from '../context/AuthContext';
@@ -110,7 +110,14 @@ const PaymentPage = () => {
       animate={{ opacity: 1, y: 0 }}
       className="max-w-xl mx-auto px-4 py-12"
     >
-      <div className="text-center mb-10">
+      <div className="text-center mb-10 relative">
+        <button 
+          onClick={() => navigate(-1)} 
+          className="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-white border border-slate-200 text-slate-500 rounded-full flex items-center justify-center hover:bg-slate-50 hover:text-slate-800 transition-colors shadow-sm hidden sm:flex"
+          title="Quay lại"
+        >
+          <ChevronLeft size={20} />
+        </button>
         <h1 className="text-3xl font-bold text-slate-800 mb-3 tracking-tight">Chọn phương thức thanh toán</h1>
         {order && (
           <p className="text-slate-500 text-sm">

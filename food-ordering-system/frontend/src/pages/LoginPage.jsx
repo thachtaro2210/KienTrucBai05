@@ -26,8 +26,12 @@ const LoginPage = () => {
     }
     try {
       setLoading(true);
-      await login(form);
-      navigate('/foods');
+      const user = await login(form);
+      if (user?.role === 'ADMIN') {
+        navigate('/admin');
+      } else {
+        navigate('/foods');
+      }
     } catch (err) {
       toast.error(err.response?.data?.message || 'Đăng nhập thất bại');
     } finally {
@@ -36,7 +40,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-white relative overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div 
           animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }} 

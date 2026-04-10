@@ -108,19 +108,38 @@ const FoodsPage = () => {
             className="border-transparent bg-slate-50 hover:bg-slate-100 focus-visible:bg-white transition-colors"
           />
         </div>
-        <div className="relative min-w-[200px]">
-          <Filter size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className="flex h-11 w-full rounded-xl border border-transparent bg-slate-50 hover:bg-slate-100 px-3 pl-10 py-2 text-sm text-slate-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary-500/10 focus-visible:bg-white transition-colors appearance-none cursor-pointer"
+      </motion.div>
+
+      {/* Category Pills */}
+      <motion.div 
+        initial={{ opacity: 0, y: -10 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        transition={{ delay: 0.15 }}
+        className="flex overflow-x-auto gap-2 pb-4 mb-4 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0"
+      >
+        <button
+          onClick={() => setCategory('')}
+          className={`whitespace-nowrap px-5 py-2 rounded-full text-sm font-semibold transition-all duration-200 border ${
+            category === '' 
+              ? 'bg-primary-600 text-white border-primary-600 shadow-sm shadow-primary-500/20' 
+              : 'bg-white text-slate-500 border-slate-200 hover:border-primary-300 hover:text-primary-600'
+          }`}
+        >
+          Tất cả món
+        </button>
+        {categories.filter(Boolean).map((c) => (
+          <button
+            key={c}
+            onClick={() => setCategory(c)}
+            className={`whitespace-nowrap px-5 py-2 rounded-full text-sm font-semibold transition-all duration-200 border ${
+              category === c
+                ? 'bg-primary-600 text-white border-primary-600 shadow-sm shadow-primary-500/20'
+                : 'bg-white text-slate-500 border-slate-200 hover:border-primary-300 hover:text-primary-600'
+            }`}
           >
-            <option value="">Tất cả danh mục</option>
-            {categories.filter(Boolean).map((c) => (
-              <option key={c} value={c}>{c}</option>
-            ))}
-          </select>
-        </div>
+            {c}
+          </button>
+        ))}
       </motion.div>
 
       {/* Food Grid */}
