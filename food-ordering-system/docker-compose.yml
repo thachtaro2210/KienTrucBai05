@@ -106,13 +106,12 @@ services:
   frontend:
     build:
       context: ./frontend
-      # Cấu hình URL để frontend React gọi qua API GATEWAY duy nhất.
-      # Local: giữ mặc định localhost. Deploy: set PUBLIC_API_BASE_URL (vd: http://152.42.169.250:8080)
+      # Hardcode API Gateway public URL for deployment.
       args:
-        - VITE_USER_SERVICE_URL=${PUBLIC_API_BASE_URL:-http://localhost:8080}
-        - VITE_FOOD_SERVICE_URL=${PUBLIC_API_BASE_URL:-http://localhost:8080}
-        - VITE_ORDER_SERVICE_URL=${PUBLIC_API_BASE_URL:-http://localhost:8080}
-        - VITE_PAYMENT_SERVICE_URL=${PUBLIC_API_BASE_URL:-http://localhost:8080}
+        - VITE_USER_SERVICE_URL=http://52.42.169.250:8080
+        - VITE_FOOD_SERVICE_URL=http://52.42.169.250:8080
+        - VITE_ORDER_SERVICE_URL=http://52.42.169.250:8080
+        - VITE_PAYMENT_SERVICE_URL=http://52.42.169.250:8080
     container_name: food_frontend
     ports:
       - "5173:80"
