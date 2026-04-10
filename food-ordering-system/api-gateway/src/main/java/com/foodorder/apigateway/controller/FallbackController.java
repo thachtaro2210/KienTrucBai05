@@ -2,7 +2,6 @@ package com.foodorder.apigateway.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,22 +11,22 @@ import java.util.Map;
 @RequestMapping("/fallback")
 public class FallbackController {
 
-    @GetMapping("/user")
+    @RequestMapping("/user")
     public ResponseEntity<Map<String, Object>> userServiceFallback() {
         return fallbackResponse("User Service hiện đang quá tải hoặc không phản hồi.");
     }
 
-    @GetMapping("/food")
+    @RequestMapping("/food")
     public ResponseEntity<Map<String, Object>> foodServiceFallback() {
         return fallbackResponse("Food Service hiện đang quá tải hoặc không phản hồi.");
     }
 
-    @GetMapping("/order")
+    @RequestMapping("/order")
     public ResponseEntity<Map<String, Object>> orderServiceFallback() {
         return fallbackResponse("Order Service hiện đang quá tải hoặc không phản hồi.");
     }
 
-    @GetMapping("/payment")
+    @RequestMapping("/payment")
     public ResponseEntity<Map<String, Object>> paymentServiceFallback() {
         return fallbackResponse("Payment Service hiện đang quá tải hoặc không phản hồi.");
     }
