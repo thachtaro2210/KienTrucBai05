@@ -11,8 +11,12 @@ spring:
         cors-configurations:
           '[/**]':
             allowedOrigins:
+              # Frontend origin(s) in production
+              - "http://152.42.169.250"
+              - "https://152.42.169.250"
               - "http://152.42.169.250:5173"
               - "http://localhost:5173"
+              - "http://localhost:3000"
             allowedMethods:
               - GET
               - POST
