@@ -2,14 +2,14 @@
 FROM node:20-alpine AS build
 WORKDIR /app
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 COPY . .
 # Sếp có thể pass ARG lúc docker-compose build nếu chạy IP khác
 ARG VITE_USER_SERVICE_URL
 ARG VITE_FOOD_SERVICE_URL
 ARG VITE_ORDER_SERVICE_URL
 ARG VITE_PAYMENT_SERVICE_URL
-RUN npm run build
+RUN node ./node_modules/vite/bin/vite.js build
 
 # Stage 2: Serve the built static files with Nginx
 FROM nginx:alpine
