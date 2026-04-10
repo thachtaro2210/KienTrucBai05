@@ -1,0 +1,26 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: food-service
+  data:
+    mongodb:
+      uri: ${MONGO_URI:mongodb://localhost:27017/food_ordering_foods}
+      # Atlas: mongodb+srv://<USER>:<PASS>@cluster.mongodb.net/food_ordering_foods
+
+app:
+  data:
+    init:
+      enabled: ${DATA_INIT_ENABLED:true}
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:3000}
+
+logging:
+  level:
+    root: INFO
+    com.foodorder.foodservice: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [%logger{36}] - %msg%n"
+  file:
+    name: logs/food-service.log
